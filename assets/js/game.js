@@ -10,7 +10,6 @@ var playerHealth = 100;
 var playerAttack = 10;
 var playerMoney = 10;
 
-
 // Creating variables for enemy Robot
 var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
 var enemyHealth = 50;
