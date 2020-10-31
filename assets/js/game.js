@@ -6,18 +6,20 @@
 
 
     
+var fightOrSkip = function() {
+    // Ask player if they'd like to fight or skip using fightOrSkip function
+    var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
 
+    // Conditional Recursive Function Call
+    // If the 'promptFight' is NOT a valid value, then execute the following statements.
+    if (!promptFight) {
+        window.alert("You need to provide a valid answer! Please try again.");
+        return fightOrSkip();
+    }
+    promptFight = promptFight.toLowerCase();
 
-var fight = function(enemy) {
-    // repeat and execute as long as the enemy-robot is alive
-    while(enemy.health > 0 && playerInfo.health > 0) {
-    // Asks the player to choose to fight or skip
-    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-    // Logs their choice
-    console.log(promptFight);
-    
-    // if player picks "skip" confirm and then stop the loop
-    if (promptFight === "skip" || promptFight === "SKIP") {
+    // If player picks "skip" confirm and then stop the loop
+    if (promptFight === "skip") {
     // Confirm player wants to skip
     var confirmSkip = window.confirm("Are you sure you'd like to quit?");
 
@@ -27,17 +29,30 @@ var fight = function(enemy) {
         // Subtract money from playerInfo.money for skipping
         playerInfo.money = Math.max(0, playerInfo.money - 10);
         console.log("playerInfo.money", playerInfo.money);
-        break;
+        
+        // Return true if player wants to leave
+        return true;
     }    
+  }
+    return false;
 }
-    // Generate random damage value based on player's attack power
-    var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-    // Subtract the value of 'playerInfo.attack' from the value of 'enemy.health' and use the result to update the value in the 'enemy.health' variable.
-    enemy.health = Math.max(0, enemy.health - damage);
-    // Log a resulting message to the console so we know that it worked.
-    console.log(
-        playerInfo.name + " attacked " + enemy.name + ". " + enemy.name + " now has " + enemy.health + " health remaing."
-    );
+
+var fight = function(enemy) {
+    // repeat and execute as long as the enemy-robot is alive
+    while(enemy.health > 0 && playerInfo.health > 0) {
+        // Ask player if they'd like to fight or skip using fightOrSkip function
+        if (fightOrSkip()) {
+            // If true, leave fight by breaking loop
+            break;
+        }
+        // Generate random damage value based on player's attack power
+        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+        // Subtract the value of 'playerInfo.attack' from the value of 'enemy.health' and use the result to update the value in the 'enemy.health' variable.
+        enemy.health = Math.max(0, enemy.health - damage);
+        // Log a resulting message to the console so we know that it worked.
+        console.log(
+            playerInfo.name + " attacked " + enemy.name + ". " + enemy.name + " now has " + enemy.health + " health remaing."
+        );
     
     // Check enemy's health
     if (enemy.health <= 0) {
@@ -177,7 +192,7 @@ var getPlayerName = function() {
         name = prompt("What is your robot's name?");
     }
 
-    console.log("'Your robot's name is '" + name);
+    console.log("Your robot's name is " + name);
     return name;
 };
 
